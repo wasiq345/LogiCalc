@@ -111,14 +111,35 @@ Future Extensions:
 - 
 
 ------------------------------------------------
-Team Collaboration Notes:
+Team Collaboration Notes
 ------------------------------------------------
-- Each team member should work on one module (tokenizer, parser, evaluator, main).
-- Follow branch workflow in Git:
-  * Each member creates a feature branch.
-  * After completing code, push branch and open a pull request.
-  * Merge into main branch after review.
-- Write small unit tests in the tests/ folder to check correctness of modules.
+
+🔹 Branch Assignments
+- Each team member works on their own branch:
+  * tokenizer-dev   → Tokenizer module
+  * parser-dev      → Parser module
+  * evaluator-dev   → Evaluator module
+  * main-dev        → Main program / integration
+
+🔹 Workflow Rules
+1. Never commit directly to `main`.
+2. Always commit and push to your own branch.
+3. After finishing a feature or bugfix:
+   - Push your branch:   git push origin <branch-name>
+   - Open a Pull Request (PR) on GitHub.
+   - Team reviews the code.
+   - Only then merge into `main`.
+
+🔹 Syncing with Main
+- Before starting new work, always update your branch:
+  git checkout main
+  git pull origin main
+  git checkout <your-branch>
+  git merge main
+
+🔹 Goal
+Keep `main` branch stable and working at all times.
+All new features or fixes should flow through branches → PR → review → merge.
 
 ------------------------------------------------
 End of Document
