@@ -1,0 +1,125 @@
+Project: Discrete Logic Evaluator
+---------------------------------
+
+Overview:
+---------
+This project is a C++ program that evaluates propositional logic expressions.
+Given an input such as "p -> q ^ p", the program will:
+
+1. Parse the logical expression into tokens.
+2. Build an expression tree based on operator precedence.
+3. Evaluate the expression under all possible truth assignments of its variables.
+4. Generate a truth table.
+5. Determine whether the expression is a tautology, contradiction, or contingency.
+
+
+------------------------------------------------
+Project Folder Structure:
+------------------------------------------------
+
+Discrete-Logic-Evaluator/
+│
+├── src/                 # Source code implementation files
+│   ├── main.cpp         # Entry point of the program
+│   ├── tokenizer.cpp    # Converts input string into tokens
+│   ├── parser.cpp       # Builds an expression tree from tokens
+│   ├── evaluator.cpp    # Evaluates the tree and generates truth tables
+│
+├── include/             # Header files for each module
+│   ├── tokenizer.h
+│   ├── parser.h
+│   ├── evaluator.h
+│
+├── docs/                # Documentation
+│   ├── instructions.txt # Detailed explanation of the project (this file)
+│
+├── README.md            # project description
+├── .gitignore           # Git ignore rules for build files, binaries, etc.
+
+------------------------------------------------
+Explanation of Source Files:
+------------------------------------------------
+
+1. main.cpp
+   - This is the entry point of the program.
+   - Responsibilities:
+     * Take input from the user (logical expression).
+     * Call the tokenizer to break input into tokens.
+     * Call the parser to build an expression tree.
+     * Pass the tree to the evaluator to generate results.
+     * Print the truth table and final classification.
+
+2. tokenizer.cpp
+   - This module processes the raw input string.
+   - Responsibilities:
+     * Remove whitespace.
+     * Identify tokens such as variables (p, q, r) and operators (->, ^, v, ¬, etc.).
+     * Handle parentheses correctly.
+     * Return a vector/list of tokens to be used by the parser.
+
+3. parser.cpp
+   - This module takes tokens and converts the infix expression (e.g., p -> q ^ p) into
+     postfix (Reverse Polish Notation, RPN).
+
+   - Responsibilities:
+     * Apply operator precedence: NOT > AND > OR > IMPLIES.
+     * Handle parentheses correctly.
+     * Use the Shunting Yard Algorithm (stack-based parsing).
+
+    Example:
+     * input (infix): p -> q ^ p
+     * Output: (postfix): p q p ^ ->
+
+      Output: a queue or vector of tokens in postfix order (ready for the evaluator).
+
+4. evaluator.cpp
+   - This module evaluates the postfix expression (from parser.cpp).
+   - Responsibilities:
+     * Identify all unique variables in the expression (p, q, etc.).
+     * Generate all possible truth assignments (2^n combinations).
+     * Use a stack-based evaluator to compute the result of the postfix expression.
+     * Build and print a truth table.
+     * Classify the result as:
+       - Tautology: always true
+       - Contradiction: always false
+       - Contingency: sometimes true, sometimes false
+
+------------------------------------------------
+Explanation of Header Files:
+------------------------------------------------
+- tokenizer.h: Declares functions and classes used in tokenizer.cpp
+- parser.h: Declares functions and classes used in parser.cpp
+- evaluator.h: Declares functions and classes used in evaluator.cpp
+
+Headers allow different source files to share definitions without rewriting code.
+
+------------------------------------------------
+Workflow of the Program:
+------------------------------------------------
+1. User inputs a logical expression (example: "p -> q ^ p").
+2. Tokenizer breaks it into tokens: [p, ->, q, ^, p].
+3. Parser converts tokens into an expression tree.
+4. Evaluator generates a truth table and final result.
+5. Program outputs the truth table and classification.
+
+------------------------------------------------
+Future Extensions:
+------------------------------------------------
+- Add support for more logical operators (↔, XOR, NAND, NOR).
+- Add features to solve arguments using rules of inference
+- Build a GUI to visualize truth tables.
+- 
+
+------------------------------------------------
+Team Collaboration Notes:
+------------------------------------------------
+- Each team member should work on one module (tokenizer, parser, evaluator, main).
+- Follow branch workflow in Git:
+  * Each member creates a feature branch.
+  * After completing code, push branch and open a pull request.
+  * Merge into main branch after review.
+- Write small unit tests in the tests/ folder to check correctness of modules.
+
+------------------------------------------------
+End of Document
+------------------------------------------------
