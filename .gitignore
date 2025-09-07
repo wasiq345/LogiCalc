@@ -1,1 +1,11 @@
-*.exe 
+# Ignore build files
+*.exe
+*.o
+*.out
+*.obj
+*.class
+
+# Ignore compiled binaries in src/
+src/parser
+src/*.exe
+src/*.o
