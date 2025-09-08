@@ -16,13 +16,13 @@ int Parser :: precedence(const std :: string& op) const
 
 bool Parser :: IsOperator(const std :: string& token) const
 {
-    return (token == "~" || token == "^" || token == "v" || token == "->");
+    return (token == "~" || token == "^" || token == "v" || token == "->" || token == "(" || token == ")");
 }
 
-// bool Parser :: IsRightAssociative(const std :: string& op) const
-// {
-    
-// }
+bool Parser :: IsRightAssociative(const std :: string& op) const
+{
+    return (op == "->" || op == "<->");
+}
 
 std :: vector<token> Parser :: parse() const
 {
@@ -33,16 +33,31 @@ std :: vector<token> Parser :: parse() const
     {
         if(!IsOperator(token)) output.push_back(token);         // If its a varaible, push to vector
 
-        else{
-            
-            // its a operator
-            while(!operators.empty() && precedence(operators.top()) >= precedence(token))
-            {
-                output.push_back(operators.top());
-                operators.pop();
-            } 
+        else{                                                  
 
-            operators.push(token);
+            if(token == "(") operators.push(token);             // handle brackets carefully like (p -> q) v R
+
+
+            else if(token == ")")                                   // pop until we dont find the matching bracket
+            {
+                while(!operators.empty() && operators.top() != "(")                  
+                {
+                    output.push_back(operators.top());
+                    operators.pop();
+                }
+                operators.pop();                                // pop the remaining opening bracket 
+            }
+
+
+            else                    // its an operator other than brackets
+            {
+                while(!operators.empty() && precedence(operators.top()) >= precedence(token) && operators.top() != "(")
+                {
+                    output.push_back(operators.top());
+                    operators.pop();
+                } 
+                operators.push(token);
+            }
         }
     }
 
@@ -57,7 +72,9 @@ int main()
 {
     std :: vector<token> tokens = {"A", "^", "B", "v", "C", "->", "D"};
     std :: vector<token> tokens2 = {"A", "->", "B", "->", "C"};
-    Parser parser(tokens2);
+     std :: vector<token> tokens3 = {"A", "^", "(", "B", "v", "C", ")"};
+
+    Parser parser(tokens3);
     std :: vector<token> ans = parser.parse();
     for(const auto& t : ans) std :: cout << t << " ";
 }
