@@ -78,7 +78,7 @@ int main()
 {
     std :: vector<token> tokens = {"A", "^", "B", "v", "C", "->", "D"};     // PostFix: A B ^ C v D ->
     std :: vector<token> tokens2 = {"A", "->", "B", "->", "C"};             
-     std :: vector<token> tokens3 = {"A", "^", "(", "B", "v", "C", ")"};   // PostFix: A B C v ^
+     std :: vector<token> tokens3 = {"A", "^", "(", "B", "v", "C", ")"};    // PostFix: A B C v ^
 
     Parser parser(tokens3);
     std :: vector<token> ans = parser.parse();
