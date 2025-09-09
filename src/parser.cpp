@@ -24,6 +24,12 @@ bool Parser :: IsRightAssociative(const std :: string& op) const
     return (op == "->" || op == "<->");
 }
 
+int Parser :: getVariableCount()
+{
+    for(const auto& token : tokens) if(!IsOperator(token)) VariableCount++;
+    return VariableCount;
+}
+
 std :: vector<token> Parser :: parse() const
 {
     std :: vector<token> output;               // Output vector to store the postfix notation
@@ -70,11 +76,12 @@ std :: vector<token> Parser :: parse() const
 // dummy main to check compilation 
 int main()
 {
-    std :: vector<token> tokens = {"A", "^", "B", "v", "C", "->", "D"};
-    std :: vector<token> tokens2 = {"A", "->", "B", "->", "C"};
-     std :: vector<token> tokens3 = {"A", "^", "(", "B", "v", "C", ")"};
+    std :: vector<token> tokens = {"A", "^", "B", "v", "C", "->", "D"};     // PostFix: A B ^ C v D ->
+    std :: vector<token> tokens2 = {"A", "->", "B", "->", "C"};             
+     std :: vector<token> tokens3 = {"A", "^", "(", "B", "v", "C", ")"};   // PostFix: A B C v ^
 
     Parser parser(tokens3);
     std :: vector<token> ans = parser.parse();
     for(const auto& t : ans) std :: cout << t << " ";
+    std :: cout << std :: endl;
 }
