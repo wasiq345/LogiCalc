@@ -9,6 +9,7 @@ using token = std :: string;        // Alias for string, tells the compiler that
 class Parser
 {
     private:
+        int VariableCount = 0;
         std :: vector<token> tokens;
 
         // Precedence tells the compiler which operator to evaluate first, returns the precedence of operators
@@ -23,7 +24,7 @@ class Parser
 
     public:
         Parser(const std :: vector<token>& tokens);
-
+        int getVariableCount();
         // Parses the tokens into postfix notation using the shunting yard algorithm
         std :: vector<token> parse() const;
 
