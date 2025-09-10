@@ -1,13 +1,22 @@
 #include "../include/evaluator.h"
 
-Evaluator ::Evaluator(int varCount, vector<string> expression)
+Evaluator :: Evaluator(const int& varCount, const std :: vector<std :: string>& PostFixexpression)
 {
     cols = varCount;
     rows = static_cast<int>(pow(2, varCount));
-    exp = expression;
+    exp = PostFixexpression;
 }
 
-void Evaluator ::truthValuesGenerator()
+bool Evaluator :: applyOperator(const std :: string& op, bool left, bool right) const
+{
+    if (op == "^") return left && right;        // AND
+    if (op == "v") return left || right;        // OR
+    if (op == "->") return (!left) || right;    // Implication
+    if (op == "<->") return (left == right);    // Biconditional
+    return false; // fallback
+}
+
+void Evaluator :: truthValuesGenerator()
 {
     int start;
     int limit;
@@ -16,17 +25,15 @@ void Evaluator ::truthValuesGenerator()
         int row = i;
         limit = (pow(2,i)/2)-1;
         start = 0;
-        vector<bool> varVals;
+        std :: vector<bool> varVals;
         for (int j = 0; j < rows; j++)
         {
             if (j <= limit && j >= start)
             {
-                // cout << "false" << endl;
                 varVals.push_back(false);
             }
             else
             {
-                // cout << "true" << endl;
                 varVals.push_back(true);
                 if (j > limit)
                 {
@@ -39,18 +46,72 @@ void Evaluator ::truthValuesGenerator()
     }
 }
 
-void Evaluator ::printTruthTable()
+bool Evaluator :: evalPostFix(const std :: vector<bool>& rowAssingment) const
+{
+    std :: stack <bool> st;
+
+    for(const auto& token : exp)
+    {
+        if(isalpha(token[0]))        // Its a variable 
+        {
+            int idx = token[0] - 'A';
+            st.push(rowAssingment[idx]);
+        }
+
+        else if(token == "~")        // if its unary operator
+        {
+            bool val = st.top(); st.pop();
+            st.push(!val);
+        }
+
+        else               
+        {
+            bool rhs = st.top(); st.pop();
+            bool lhs = st.top(); st.pop();
+            st.push(applyOperator(token, lhs, rhs));
+        }
+    }
+
+    return st.top();
+}
+
+std :: vector<std :: vector <bool>>  Evaluator :: getTruthTable()
 {
     truthValuesGenerator();
-    for (int i = 0; i < rows; i++)
+
+    std::vector<std::vector<bool>> truthTable;
+
+    for(int i = 0; i < rows; ++i)
     {
-        for (int j = 0; j < cols; j++)
-        {
-            cout << truthVals[j][i] << "\t";
-        }
-        cout << endl;
+        std :: vector<bool> rowAssignment;
+
+        for(int j = 0; j < cols; ++j)  rowAssignment.push_back(truthVals[j][i]);
+
+        bool result = evalPostFix(rowAssignment);
+
+        rowAssignment.push_back(result);
+        truthTable.push_back(rowAssignment);
     }
+    return truthTable;
 }
 
 
+// dummy main to check results
+
+int main() {
+    Evaluator e(3, {"A", "B", "C", "^", "v"}); // Represents the expression (A ^ B) v C
+    auto table = e.getTruthTable();
+    std :: cout << "A B C | Result\n";
+    std :: cout << "--------------\n";
+    for(const auto& row : table)
+    {
+        for(size_t i = 0; i < row.size(); i++)
+        {
+            std :: cout << row[i] << " ";
+            if(i == row.size() - 2) std :: cout << "| ";
+        }
+        std :: cout << "\n";
+    }
+    return 0;
+}
 

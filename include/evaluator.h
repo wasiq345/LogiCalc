@@ -1,19 +1,22 @@
+#pragma once
 #include <iostream>
 #include <vector>
+#include<stack>
 #include <string>
 #include <cmath>
-
-using namespace std;
 
 class Evaluator
 {
 public:
-    Evaluator(int varCount, vector<string> expression);
+    Evaluator(const int& varCount, const std :: vector<std :: string>& PostFixexpression);
     void truthValuesGenerator();
-    void printTruthTable();
+    std :: vector<std :: vector <bool>> getTruthTable();
 
 private:
     int rows, cols;
-    vector <vector<bool> > truthVals;
-    vector<string> exp;
+    std :: vector <std :: vector<bool> > truthVals;
+    std :: vector<std :: string> exp;
+
+    bool evalPostFix(const std :: vector<bool>& rowAssingment) const;
+    bool applyOperator(const std :: string& op, bool left, bool right) const;
 };
