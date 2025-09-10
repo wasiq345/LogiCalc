@@ -4,6 +4,7 @@
 *.out
 *.obj
 *.class
+*.vscode
 
 # Ignore compiled binaries in src/
 src/parser
