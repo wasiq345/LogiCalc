@@ -2,7 +2,6 @@
 #include <vector>
 #include <stack>
 #include <string> 
-#include<iostream>
 
 using token = std :: string;        // Alias for string, tells the compiler that token is a string
 
