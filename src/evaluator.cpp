@@ -2,13 +2,15 @@
 
 Evaluator :: Evaluator(const int& varCount, const std :: vector<std :: string>& PostFixexpression)
 {
+     std::set<std::string> variableSet;
     for (const auto& token : PostFixexpression)
     {
         if (isalpha(token[0]) && std::find(variables.begin(), variables.end(), token) == variables.end() && token != "v")
         {
-            variables.push_back(token);
+             variableSet.insert(token);
         }
     }
+    variables.assign(variableSet.begin(), variableSet.end());
     cols = variables.size();
     rows = static_cast<int>(pow(2, varCount));
     exp = PostFixexpression;
@@ -28,7 +30,6 @@ void Evaluator :: truthValuesGenerator()
         truthVals.clear();
         int numVars = variables.size();
         rows = pow(2, numVars);
-        std::sort(variables.begin(), variables.end());
         
         // Generate truth values for each variable
         for (int varIndex = 0; varIndex < numVars; varIndex++) {
