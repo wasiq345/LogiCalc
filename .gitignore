@@ -1,0 +1,12 @@
+# Ignore build files
+*.exe
+*.o
+*.out
+*.obj
+*.class
+*.vscode/
+
+# Ignore compiled binaries in src/
+src/parser
+src/*.exe
+src/*.o
