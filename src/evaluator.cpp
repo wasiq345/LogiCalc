@@ -2,6 +2,13 @@
 
 Evaluator :: Evaluator(const int& varCount, const std :: vector<std :: string>& PostFixexpression)
 {
+    for (const auto& token : PostFixexpression)
+    {
+        if (isalpha(token[0]) && std::find(variables.begin(), variables.end(), token) == variables.end() && token != "v")
+        {
+            variables.push_back(token);
+        }
+    }
     cols = varCount;
     rows = static_cast<int>(pow(2, varCount));
     exp = PostFixexpression;
@@ -20,7 +27,7 @@ void Evaluator :: truthValuesGenerator()
 {
     int start;
     int limit;
-    for (int i = 1; i <= cols; i++)
+    for (int i = 1; i <= variables.size(); i++)
     {
         int row = i;
         limit = (pow(2,i)/2)-1;
@@ -54,8 +61,12 @@ bool Evaluator :: evalPostFix(const std :: vector<bool>& rowAssingment) const
     {
         if(isalpha(token[0]))        // Its a variable 
         {
-            int idx = token[0] - 'A';
-            st.push(rowAssingment[idx]);
+            auto it = std :: find(variables.begin(), variables.end(), token);
+            if(it != variables.end()) 
+            {
+                int idx = std :: distance(variables.begin(), it);
+                st.push(rowAssingment[idx]);
+            }
         }
 
         else if(token == "~")        // if its unary operator
@@ -99,9 +110,10 @@ std :: vector<std :: vector <bool>>  Evaluator :: getTruthTable()
 // dummy main to check results
 
 int main() {
-    Evaluator e(3, {"A", "B", "C", "^", "v"}); // Represents the expression (A ^ B) v C
+    Evaluator e(2, {"A", "B","<->"}); // Represents the expression (A ^ B) v C
     auto table = e.getTruthTable();
-    std :: cout << "A B C | Result\n";
+    for(const auto& var : e.variables) std :: cout << var << " ";
+    std :: cout << "| Result\n";
     std :: cout << "--------------\n";
     for(const auto& row : table)
     {

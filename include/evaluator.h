@@ -4,12 +4,14 @@
 #include<stack>
 #include <string>
 #include <cmath>
+#include <algorithm>
 
 class Evaluator
 {
 public:
     Evaluator(const int& varCount, const std :: vector<std :: string>& PostFixexpression);
     void truthValuesGenerator();
+    std::vector<std::string> variables;
     std :: vector<std :: vector <bool>> getTruthTable();
 
 private:
