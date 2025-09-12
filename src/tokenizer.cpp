@@ -7,7 +7,7 @@ Tokenizer :: Tokenizer(const std :: string& expression)
 
 bool Tokenizer :: isOperator(char ch) const
 {
-    return (ch == '~' || ch == '^' || ch == 'v' || ch == '-' || ch == '<' || ch == '>' || ch == '(' || ch == ')');
+    return (ch == '~' || ch == '^' || ch == '|' || ch == '-' || ch == '<' || ch == '>' || ch == '(' || ch == ')');
 }
 
 std :: vector<std :: string> Tokenizer :: tokenize()
@@ -44,19 +44,9 @@ std :: vector<std :: string> Tokenizer :: tokenize()
                  } 
                 else 
                 {
-                    // Start new token
                     tokens.push_back(std::string(1, token));
                 }
             }
         }
         return tokens;
     }
-
-
-int main()
-{
-    Tokenizer t("A ^ B v C -> D <-> E");
-    auto tokens = t.tokenize();
-    for(const auto& token : tokens) std :: cout << token << "*";
-    return 0;
-}
