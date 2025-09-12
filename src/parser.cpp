@@ -9,14 +9,14 @@ int Parser :: precedence(const std :: string& op) const
 {
     if(op == "~") return 3;             // Not operator has the highest precedence meaning it'll be evaluated first.
     else if(op == "^") return 2;
-    else if(op == "v") return 1;
+    else if(op == "|") return 1;
     else if(op == "->") return 0;
     return -1; 
 }
 
 bool Parser :: IsOperator(const std :: string& token) const
 {
-    return (token == "~" || token == "^" || token == "v" || token == "->" || token == "(" || token == ")");
+    return (token == "~" || token == "^" || token == "|" || token == "->" || token == "(" || token == ")");
 }
 
 bool Parser :: IsRightAssociative(const std :: string& op) const
@@ -72,16 +72,3 @@ std :: vector<token> Parser :: parse() const
     return output;
 }
 
-
-// dummy main to check compilation 
-int main()
-{
-    std :: vector<token> tokens = {"A", "^", "B", "v", "C", "->", "D"};     // PostFix: A B ^ C v D ->
-    std :: vector<token> tokens2 = {"A", "->", "B", "->", "C"};             
-     std :: vector<token> tokens3 = {"A", "^", "(", "B", "v", "C", ")"};    // PostFix: A B C v ^
-
-    Parser parser(tokens3);
-    std :: vector<token> ans = parser.parse();
-    for(const auto& t : ans) std :: cout << t << " ";
-    std :: cout << std :: endl;
-}
