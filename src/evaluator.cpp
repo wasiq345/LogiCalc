@@ -9,7 +9,7 @@ Evaluator :: Evaluator(const int& varCount, const std :: vector<std :: string>& 
             variables.push_back(token);
         }
     }
-    cols = varCount;
+    cols = variables.size();
     rows = static_cast<int>(pow(2, varCount));
     exp = PostFixexpression;
 }
@@ -17,40 +17,31 @@ Evaluator :: Evaluator(const int& varCount, const std :: vector<std :: string>& 
 bool Evaluator :: applyOperator(const std :: string& op, bool left, bool right) const
 {
     if (op == "^") return left && right;        // AND
-    if (op == "v") return left || right;        // OR
+    if (op == "|") return left || right;        // OR
     if (op == "->") return (!left) || right;    // Implication
     if (op == "<->") return (left == right);    // Biconditional
-    return false; // fallback
+    return false;
 }
 
 void Evaluator :: truthValuesGenerator()
-{
-    int start;
-    int limit;
-    for (int i = 1; i <= variables.size(); i++)
-    {
-        int row = i;
-        limit = (pow(2,i)/2)-1;
-        start = 0;
-        std :: vector<bool> varVals;
-        for (int j = 0; j < rows; j++)
-        {
-            if (j <= limit && j >= start)
-            {
-                varVals.push_back(false);
+{ 
+        truthVals.clear();
+        int numVars = variables.size();
+        rows = pow(2, numVars);
+        std::sort(variables.begin(), variables.end());
+        
+        // Generate truth values for each variable
+        for (int varIndex = 0; varIndex < numVars; varIndex++) {
+            std::vector<bool> varVals;
+            int cycleLength = pow(2,numVars - varIndex - 1);
+            
+            for (int row = 0; row < rows; row++) {
+                // Determine if this row should be true or false for this variable
+                bool value = (row / cycleLength) % 2;
+                varVals.push_back(value);
             }
-            else
-            {
-                varVals.push_back(true);
-                if (j > limit)
-                {
-                    limit += static_cast<int>(pow(2, row));
-                    start += static_cast<int>(pow(2, row));
-                }
-            }
+            truthVals.push_back(varVals);
         }
-        truthVals.push_back(varVals);
-    }
 }
 
 bool Evaluator :: evalPostFix(const std :: vector<bool>& rowAssingment) const
@@ -104,26 +95,5 @@ std :: vector<std :: vector <bool>>  Evaluator :: getTruthTable()
         truthTable.push_back(rowAssignment);
     }
     return truthTable;
-}
-
-
-// dummy main to check results
-
-int main() {
-    Evaluator e(2, {"A", "B","<->"}); // Represents the expression (A ^ B) v C
-    auto table = e.getTruthTable();
-    for(const auto& var : e.variables) std :: cout << var << " ";
-    std :: cout << "| Result\n";
-    std :: cout << "--------------\n";
-    for(const auto& row : table)
-    {
-        for(size_t i = 0; i < row.size(); i++)
-        {
-            std :: cout << row[i] << " ";
-            if(i == row.size() - 2) std :: cout << "| ";
-        }
-        std :: cout << "\n";
-    }
-    return 0;
 }
 
