@@ -4,7 +4,8 @@
 *.out
 *.obj
 *.class
-.vscode/*.json
+venv
+
 
 # Ignore compiled binaries in src/
 src/parser
