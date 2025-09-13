@@ -8,11 +8,16 @@ using json = nlohmann :: json;
 
 int main(int argc, char* argv[])
 {
-    std :: string expression = argv[1];
+    std :: string expression;
     if(argc < 2){
      std :: cerr << "Usage: " << argv[0] << " <expression> " << std :: endl;
      return 1;
     }
+
+    for (int i = 1; i < argc; i++) {
+    if (i > 1) expression += " ";
+    expression += argv[i];
+}
 
         Tokenizer tokenizer(expression);
         auto tokens = tokenizer.tokenize();
@@ -25,6 +30,7 @@ int main(int argc, char* argv[])
         json output;
         output["variables"] = evaluator.variables;
         output["rows"] = truthTable;
+        output["classification"] = evaluator.getClassification();
 
         std :: cout << output.dump() << std :: endl;
 }

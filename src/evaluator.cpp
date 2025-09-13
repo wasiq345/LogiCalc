@@ -98,3 +98,24 @@ std :: vector<std :: vector <bool>>  Evaluator :: getTruthTable()
     return truthTable;
 }
 
+std::string Evaluator :: getClassification() const
+{
+    int trueCount = 0;
+    int falseCount = 0;
+
+    for(int i = 0; i < rows; ++i)
+    {
+        std :: vector<bool> rowAssignment;
+
+        for(int j = 0; j < cols; ++j)  rowAssignment.push_back(truthVals[j][i]);
+
+        bool result = evalPostFix(rowAssignment);
+
+        if(result) trueCount++;
+        else falseCount++;
+    }
+
+    if(trueCount == rows) return "Tautology";
+    else if(falseCount == rows) return "Contradiction";
+    else return "Contingency";
+}
