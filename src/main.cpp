@@ -1,22 +1,19 @@
 #include "../include/parser.h"
 #include "../include/tokenizer.h"
 #include "../include/evaluator.h"
+#include "../include/json.hpp"
 #include <iostream>
 
-int main()
-{
-    std :: string expression;
-    do
-    {
-        std :: cout << "\t\t--------------------------------------------\n";
-        std :: cout << "\t\t\t Propostional Logic \n\t\t\t Evaluator \n";
-        std :: cout << "\t\t--------------------------------------------\n";
+using json = nlohmann :: json;
 
-        std :: cout << "\n\n\t\t Write Expression: " << std :: endl;
-        std :: cout << "\t\t Write quit to Exit" << std :: endl;
-        std :: getline(std :: cin, expression);
-        
-        if(expression == "quit") break;
+int main(int argc, char* argv[])
+{
+    std :: string expression = argv[1];
+    if(argc < 2){
+     std :: cerr << "Usage: " << argv[0] << " <expression> " << std :: endl;
+     return 1;
+    }
+
         Tokenizer tokenizer(expression);
         auto tokens = tokenizer.tokenize();
         Parser parser(tokens);
@@ -24,15 +21,10 @@ int main()
         auto PostFixexpression = parser.parse();
         Evaluator evaluator(varCount, PostFixexpression);
         auto truthTable = evaluator.getTruthTable();
-        std :: cout << "\n\n\t\t Truth Table \n";
-        for(const auto& var : evaluator.variables) std :: cout << var << "\t";
-        std :: cout << "Result\n";
-        for(const auto& row : truthTable)
-        {
-            for(const auto& val : row) std :: cout << val << "\t";
-            std :: cout << "\n";
-        }
-        std :: cout << "\n\n";
 
-    } while (true);
+        json output;
+        output["variables"] = evaluator.variables;
+        output["rows"] = truthTable;
+
+        std :: cout << output.dump() << std :: endl;
 }
