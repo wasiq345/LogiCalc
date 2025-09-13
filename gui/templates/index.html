@@ -13,10 +13,22 @@
             <button type="submit">Evaluate</button>
         </form>
 
-        {% if result %}
+        {% if variables %}
         <div class="output">
-            <h2>Result:</h2>
-            <pre>{{ result }}</pre>
+            <table>
+                <tr> 
+                    {% for var in variables %}
+                        <th>{{ var }}</th>
+                    {% endfor %}
+                </tr>
+                    {% for row in rows%}
+                        <tr>
+                            {%for val in row %}
+                                <td> {{"T" if val else "F"}} </td>
+                                {% endfor %}
+                        </tr>
+                    {% endfor %}
+            </table>
         </div>
         {% endif %}
     </div>
