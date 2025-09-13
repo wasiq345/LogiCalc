@@ -17,7 +17,8 @@ def index():
             result = json.loads(process.stdout)
         else:
             result = f"Error: {process.stderr}"
-    return render_template("index.html", variables = result["variables"], rows = result["rows"])
+    return render_template("index.html", variables = result["variables"], rows = result["rows"],
+                            classification = result["classification"], expression = expression)
 
 if __name__ == "main":
     app.run(debug=True)
