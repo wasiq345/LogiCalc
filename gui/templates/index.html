@@ -20,6 +20,7 @@
                     {% for var in variables %}
                         <th>{{ var }}</th>
                     {% endfor %}
+                    <th> {{expression}} </th>
                 </tr>
                     {% for row in rows%}
                         <tr>
@@ -31,6 +32,8 @@
             </table>
         </div>
         {% endif %}
+
+        <h3 class = "classification"> {{ classification }}</h3>
     </div>
 </body>
 </html>
