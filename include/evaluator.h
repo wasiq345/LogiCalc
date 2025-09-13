@@ -13,6 +13,7 @@ public:
     void truthValuesGenerator();
     std::vector<std::string> variables;
     std :: vector<std :: vector <bool>> getTruthTable();
+    std::string getClassification() const;
 
 private:
     int rows, cols;
