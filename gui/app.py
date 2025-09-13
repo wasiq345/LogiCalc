@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-import subprocess
+import subprocess, json
 
 app = Flask(__name__)
 
@@ -9,17 +9,15 @@ def index():
     if request.method == 'POST':
         expression = request.form["expression"]
 
-        process =subprocess.run(["../bin/main"],
-                                input = expression,
-                                stdout = subprocess.PIPE,
-                                stderr = subprocess.PIPE,
-                                 text = True)
+        process =subprocess.run(["../bin/main", expression],
+                                capture_output=True,
+                                text = True)
         
         if process.returncode == 0:
-            result = process.stdout
+            result = json.loads(process.stdout)
         else:
             result = f"Error: {process.stderr}"
-    return render_template("index.html", result = result)
+    return render_template("index.html", variables = result["variables"], rows = result["rows"])
 
 if __name__ == "main":
     app.run(debug=True)
