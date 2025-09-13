@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Logic Evaluator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Logic Evaluator</h1>
+        <form method="POST">
+            <input type="text" name="expression" placeholder="Enter expression (e.g., (A^B)->C)">
+            <button type="submit">Evaluate</button>
+        </form>
+
+        {% if result %}
+        <div class="output">
+            <h2>Result:</h2>
+            <pre>{{ result }}</pre>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
