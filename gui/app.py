@@ -2,23 +2,34 @@ from flask import Flask, render_template, request
 import subprocess, json
 
 app = Flask(__name__)
-
-@app.route("/", methods = ['GET', 'POST'])
+@app.route("/", methods=['GET', 'POST'])
 def index():
-    result = None
+    expression = ""
+    vars_ = []
+    rows_ = []
+    classification_ = ""
+    
     if request.method == 'POST':
         expression = request.form["expression"]
-
-        process =subprocess.run(["../bin/main", expression],
-                                capture_output=True,
-                                text = True)
-        
+        process = subprocess.run(["../bin/main", expression],
+                                 capture_output=True,
+                                 text=True)
         if process.returncode == 0:
-            result = json.loads(process.stdout)
+            try:
+                result = json.loads(process.stdout)
+                vars_ = result.get("variables", [])
+                rows_ = result.get("rows", [])
+                classification_ = result.get("classification", "")
+            except json.JSONDecodeError:
+                vars_ = []
+                rows_ = []
+                classification_ = f"Error decoding JSON: {process.stdout}"
         else:
-            result = f"Error: {process.stderr}"
-    return render_template("index.html", variables = result["variables"], rows = result["rows"],
-                            classification = result["classification"], expression = expression)
+            classification_ = f"Error: {process.stderr}"
 
-if __name__ == "main":
+    return render_template("index.html", variables=vars_, rows=rows_,
+                           classification=classification_, expression=expression)
+
+
+if __name__ == "__main__":
     app.run(debug=True)
