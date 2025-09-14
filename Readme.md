@@ -36,7 +36,8 @@ It evaluates **logical expressions** (using a C++ backend for performance) and d
 
 
 ## 📸 Demo Preview
-![Preview](<Screenshot from 2025-09-14 14-22-55.png>)
+
+*Screenshots Coming soon*
 
 
 
