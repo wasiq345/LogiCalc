@@ -1,10 +1,7 @@
 #!/bin/bash
-echo "🚀 Building C++ engine..."
-
-mkdir -p bin
-
-# Compile all .cpp files in src/ into one executable
-g++ src/*.cpp -o bin/main -std=c++17
-
+set -e  # stop if any command fails
+rm -rf bin
+mkdir bin
+g++ src/*.cpp -Iinclude -o bin/main
 chmod +x bin/main
-echo "✅ Build complete."
+echo "✅ Build successful: bin/main created"

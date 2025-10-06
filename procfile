@@ -1,2 +1,3 @@
-web: ./build.sh && gunicorn gui.app:app --bind 0.0.0.0:$PORT
+web: gunicorn gui.app:app
+
 

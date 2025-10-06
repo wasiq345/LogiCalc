@@ -11,7 +11,7 @@ def index():
     
     if request.method == 'POST':
         expression = request.form["expression"]
-        process = subprocess.run(["../bin/main", expression],
+        process = subprocess.run(["./bin/main", expression],
                                  capture_output=True,
                                  text=True)
         if process.returncode == 0:
